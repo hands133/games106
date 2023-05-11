@@ -261,14 +261,16 @@ public:
 		// Get the local node matrix
 		// It's either made up from translation, rotation, scale or a 4x4 matrix
 		if (inputNode.translation.size() == 3) {
-			node->matrix = glm::translate(node->matrix, glm::vec3(glm::make_vec3(inputNode.translation.data())));
+			node->translation_hw1 = glm::make_vec3(inputNode.translation.data());
+			node->matrix = glm::translate(node->matrix, node->translation_hw1);
 		}
 		if (inputNode.rotation.size() == 4) {
-			glm::quat q = glm::make_quat(inputNode.rotation.data());
-			node->matrix *= glm::mat4(q);
+			node->rotation_hw1 = glm::make_quat(inputNode.rotation.data());
+			node->matrix *= glm::mat4(node->rotation_hw1);
 		}
 		if (inputNode.scale.size() == 3) {
-			node->matrix = glm::scale(node->matrix, glm::vec3(glm::make_vec3(inputNode.scale.data())));
+			node->scale_hw1 = glm::make_vec3(inputNode.scale.data());
+			node->matrix = glm::scale(node->matrix, node->scale_hw1);
 		}
 		if (inputNode.matrix.size() == 16) {
 			node->matrix = glm::make_mat4x4(inputNode.matrix.data());
